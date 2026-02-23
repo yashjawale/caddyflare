@@ -7,4 +7,6 @@ FROM caddy:latest
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
-LABEL org.opencontainers.image.source=https://github.com/${{ github.repository }}
+# Get source from GitHub repository
+ARG REPO_NAME
+LABEL org.opencontainers.image.source=https://github.com/${REPO_NAME}
