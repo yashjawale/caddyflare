@@ -1,0 +1,31 @@
+name: Monitor Upstream Caddy
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every week
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_update: ${{ steps.compare.outputs.update }}
+    steps:
+      - name: Get Latest Upstream Caddy Tag
+        id: upstream
+        run: echo "tag=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r .tag_name)" >> $GITHUB_OUTPUT
+
+      - name: Check if Tag exists in GHCR
+        id: compare
+        run: |
+          # Use docker manifest to check if the specific version tag already exists
+          if ! docker manifest inspect ghcr.io/${{ github.repository_owner }}/caddyflare:${{ steps.upstream.outputs.tag }} > /dev/null 2>&1; then
+            echo "update=true" >> $GITHUB_OUTPUT
+          else
+            echo "update=false" >> $GITHUB_OUTPUT
+          fi
+
+  trigger-build:
+    needs: check-version
+    if: needs.check-version.outputs.needs_update == 'true'
+    uses: ./.github/workflows/build.yml
