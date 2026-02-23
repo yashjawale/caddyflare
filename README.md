@@ -6,10 +6,10 @@
 
 This project provides automated Docker builds of Caddy with the Cloudflare DNS module pre-compiled. It monitors the upstream Caddy releases and automatically builds new images whenever a new version is available.
 
-- 🚀 Automated builds on upstream Caddy releases
-- 🔄 Weekly monitoring of Caddy repository for updates
-- 🏗️ Pre-compiled Cloudflare DNS module included
-- 📦 Published to GitHub Container Registry (GHCR)
+- Automated builds on upstream Caddy releases
+- Weekly monitoring of Caddy repository for updates
+- Pre-compiled Cloudflare DNS module included
+- Published to GitHub Container Registry (GHCR)
 
 ## Quick Start
 
