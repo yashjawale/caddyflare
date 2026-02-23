@@ -4,7 +4,9 @@
 [![Monitor Upstream Caddy](https://github.com/yashjawale/caddyflare/actions/workflows/monitor.yml/badge.svg)](https://github.com/yashjawale/caddyflare/actions/workflows/monitor.yml)
 
 
-This project provides automated Docker builds of Caddy with the Cloudflare DNS module pre-compiled. It monitors the upstream Caddy releases and automatically builds new images whenever a new version is available.
+Automated Docker builds of Caddy with the Cloudflare DNS module pre-compiled. Monitors the upstream Caddy releases and automatically builds new images whenever a new version is available.
+
+If `dns.providers.cloudflare` becomes standard on Caddy installations this build won't be needed.
 
 - Automated builds on upstream Caddy releases
 - Weekly monitoring of Caddy repository for updates
@@ -75,6 +77,10 @@ Example:
 ```bash
 docker run -e CLOUDFLARE_API_TOKEN=your_token_here ghcr.io/yashjawale/caddyflare:latest
 ```
+
+## Credits
+- https://github.com/caddyserver/caddy
+- https://github.com/caddy-dns/cloudflare
 
 ---
 
