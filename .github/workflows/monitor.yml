@@ -1,5 +1,9 @@
 name: Monitor Upstream Caddy
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   schedule:
     - cron: '0 0 * * 0' # Every week
