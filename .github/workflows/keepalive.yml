@@ -2,7 +2,7 @@ name: Keepalive
 
 on:
   schedule:
-    - cron: '0 0 1 * *' # Monthly - prevents scheduled workflows from being disabled after 60 days of inactivity
+    - cron: '0 0 * * 1' # Every Monday 00:00 UTC — prevents scheduled workflows from being disabled after 60 days of inactivity
   workflow_dispatch:
 
 permissions:
@@ -17,14 +17,16 @@ jobs:
 
       - name: Keepalive commit
         run: |
-          # Only create an empty commit if there has been no activity in the last 50 days
-          # GitHub disables scheduled workflows after 60 days of inactivity
+          # GitHub auto-disables scheduled workflows after 60 days without
+          # repository activity. An empty commit counts as activity and resets
+          # the 60-day timer. Weekly check with 50-day threshold stays well
+          # within the window while avoiding noise when active.
           LAST_COMMIT=$(git log -1 --format=%ct)
           THRESHOLD=$(date -d '50 days ago' +%s)
           if [ "$LAST_COMMIT" -lt "$THRESHOLD" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git commit --allow-empty -m "chore: keepalive - prevent workflow disable"
+            git commit --allow-empty -m "chore: keepalive [skip ci]"
             git push
           else
             echo "Repository is active, no keepalive commit needed"
